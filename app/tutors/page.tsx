@@ -5,6 +5,16 @@ export default function TutorsPage() {
   // Temporary static tutor data (replace with DB/API later)
   const tutors = [
     {
+      name: "Aimee",
+      pronouns: "she/her",
+      school: "Princeton 29’",
+      subjects: "Molecular Biology",
+      bio: `Hi, I’m Aimee! I’m a first-year at Princeton studying Molecular Biology. 
+      I spend most of my free time dancing (ballet is my favorite), and I also love reading and strolling around :) 
+      Excited to learn together!`,
+      image: "/images/aimee.jpeg",
+    },
+    {
       name: "Akhil",
       pronouns: "he/him",
       school: "Brown 29’",
@@ -13,6 +23,15 @@ export default function TutorsPage() {
       Outside of academics, I do Model UN and I'm a black belt in Mixed Martial Arts.
       I always love to learn, grow, and work with others!`,
       image: "/images/akhil.jpeg",
+    },
+    {
+      name: "Carnegie",
+      pronouns: "he/him",
+      school: "Cornell 28’",
+      subjects: "Biology, Chemistry",
+      bio: `Outside of my studies, I am an avid runner, rock climber, and soccer fan. 
+      I also have a keen interest in complex systems, ranging from grand strategy gaming to the competitive esports scene.`,
+      image: "/images/carnegie.jpeg",
     },
     {
       name: "Franklin",
@@ -53,6 +72,16 @@ export default function TutorsPage() {
       I’m also the co-founder and CPO of Bloom, where we’re creating tech-driven solutions for plant care. 
       Always excited to build, learn, and collaborate!`,
       image: "/images/ryan.jpeg",
+    },
+    {
+      name: "Stephanie",
+      pronouns: "she/her",
+      school: "Cornell 29’",
+      subjects: "Communication and Information Science",
+      bio: `Hi, I’m Stephanie! I’m a first-year at Cornell studying Communication, 
+      planning on double majoring in Info Science. In my free time, 
+      I manage my own social media account and post videos that I edit!`,
+      image: "/images/stephanie.jpeg",
     },
     {
       name: "Yufeng",

@@ -7,24 +7,17 @@ export default function Footer() {
 
         {/* Company Name */}
         <div className="text-xl font-semibold text-white/80">
-          LockedIn
+          We Got You
         </div>
 
         {/* Contact */}
         <p className="mt-3">
           Contact us:{" "}
-          <a href="mailto:contact@example.com" className="hover:text-white transition">
-            contact@example.com
+          <a href="mailto:lockedin4contact@gmail.com" className="hover:text-white transition">
+          lockedin4contact@gmail.com
           </a>
         </p>
 
-        {/* Socials (placeholder) */}
-        <div className="mt-4 flex gap-4">
-          {/* Replace with real links later */}
-          <Link href="#" className="hover:text-white transition">Instagram</Link>
-          <Link href="#" className="hover:text-white transition">LinkedIn</Link>
-          <Link href="#" className="hover:text-white transition">Twitter</Link>
-        </div>
 
         {/* Privacy policy */}
         <div className="mt-6">
