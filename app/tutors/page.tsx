@@ -1,7 +1,8 @@
-import Image from "next/image";
 import TutorCard from "@/components/TutorCard";
 
 export default function TutorsPage() {
+  const ACCENT = "#8B1E3F"; // muted Penn-style crimson
+
   // Temporary static tutor data (replace with DB/API later)
   const tutors = [
     {
@@ -87,7 +88,7 @@ export default function TutorsPage() {
       name: "Yufeng",
       pronouns: "he/him",
       school: "UMich 26’",
-      subjects: " Computer Science & Data Analytics",
+      subjects: "Computer Science & Data Analytics",
       bio: `I am YuFeng, senior at University of Michigan! I am the president of the school's Chinese Language Table 
       because I enjoy exchanging cultures with people from different backgrounds!`,
       image: "/images/yufeng.jpeg",
@@ -95,42 +96,166 @@ export default function TutorsPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white text-[#001F3F]">
+      {/* ===================== */}
+      {/* TUTORS SECTION */}
+      {/* ===================== */}
 
-      {/* INTRO SECTION */}
-      <section className="text-center mt-16 mb-10 px-6">
-        <h1 className="text-4xl font-bold text-[#001F3F]">Our Tutors</h1>
-        <p className="mt-4 text-lg text-gray-600">
-          Meet our Ivy League student tutors.
-        </p>
-      </section>
+      <header className="pt-16 pb-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+            Directory
+          </p>
 
-      {/* FUTURE SEARCH + FILTER SECTION (STRUCTURE ONLY — HIDDEN VISUALLY) */}
-      <section id="future-controls" className="hidden">
-        <div className="max-w-4xl mx-auto flex gap-4 px-6 py-4">
-          <input
-            type="text"
-            placeholder="Search tutors..."
-            className="border px-4 py-2 rounded w-full"
+          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold">
+            Our Tutors
+          </h1>
+
+          <div
+            className="mt-5 h-px w-20"
+            style={{ backgroundColor: ACCENT, opacity: 0.35 }}
           />
-          <select className="border px-3 py-2 rounded">
-            <option>All Subjects</option>
-          </select>
+
+          <p className="mt-5 max-w-2xl text-lg text-gray-700 leading-relaxed">
+            Meet our current student tutors. Each tutor is selected for academic
+            strength, clarity, and a student-centered approach.
+          </p>
+        </div>
+      </header>
+
+      {/* SEARCH / FILTER — intentionally disabled for now */}
+      {/*
+      <section className="pb-10">
+        <div className="max-w-6xl mx-auto px-6">
+          ...
+        </div>
+      </section>
+      */}
+
+      {/* Tutor Grid */}
+      <section className="pb-24">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            {tutors.map((tutor) => (
+              <TutorCard
+                key={`${tutor.name}-${tutor.school}`}
+                tutor={tutor}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* TUTOR GRID */}
-      <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-          {tutors.map((tutor, idx) => (
-            <TutorCard key={idx} tutor={tutor} />
-          ))}
+      {/* ===================== */}
+      {/* PRICING SECTION (APPENDED) */}
+      {/* ===================== */}
+
+      <section className="border-t border-gray-200 pt-20 pb-32 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6">
+          {/* Pricing Header */}
+          <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+            Program Information
+          </p>
+
+          <h2 className="mt-3 text-3xl sm:text-4xl font-semibold">
+            Pricing
+          </h2>
+
+          <div
+            className="mt-5 h-px w-20"
+            style={{ backgroundColor: ACCENT, opacity: 0.35 }}
+          />
+
+          <p className="mt-5 max-w-2xl text-lg text-gray-700 leading-relaxed">
+            Clear, transparent tutoring rates based on academic level and
+            specialization. All sessions are one-on-one and scheduled flexibly.
+          </p>
+
+          {/* Pricing Cards */}
+          <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl">
+            {/* Card 1 */}
+            <div className="rounded-xl border border-gray-200 bg-white p-8">
+              <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+                Tutoring
+              </p>
+
+              <h3 className="mt-2 text-xl font-semibold">
+                Standard Tutoring
+              </h3>
+
+              <div
+                className="mt-4 h-px w-16"
+                style={{ backgroundColor: ACCENT, opacity: 0.35 }}
+              />
+
+              <p className="mt-4 text-gray-700">
+                Coursework support based on subject difficulty and grade level.
+              </p>
+
+              <div className="mt-6 text-3xl font-semibold">
+                $50–60
+                <span className="text-lg font-medium text-gray-600"> / hr</span>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="rounded-xl border border-gray-200 bg-white p-8">
+              <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+                Advanced
+              </p>
+
+              <h3 className="mt-2 text-xl font-semibold">
+                Advanced Tutoring
+              </h3>
+
+              <div
+                className="mt-4 h-px w-16"
+                style={{ backgroundColor: ACCENT, opacity: 0.35 }}
+              />
+
+              <p className="mt-4 text-gray-700">
+                AP/IB, advanced high school, and college-level coursework.
+              </p>
+
+              <div className="mt-6 text-3xl font-semibold">
+                $70–80
+                <span className="text-lg font-medium text-gray-600"> / hr</span>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="rounded-xl border border-gray-200 bg-white p-8">
+              <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
+                Mentorship
+              </p>
+
+              <h3 className="mt-2 text-xl font-semibold">
+                College Admissions Mentorship
+              </h3>
+
+              <div
+                className="mt-4 h-px w-16"
+                style={{ backgroundColor: ACCENT, opacity: 0.35 }}
+              />
+
+              <p className="mt-4 text-gray-700">
+                Essay workshops, application strategy, and long-term guidance.
+              </p>
+
+              <div className="mt-6 text-3xl font-semibold">
+                $80+
+                <span className="text-lg font-medium text-gray-600"> / hr</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footnote */}
+          <p className="mt-12 max-w-2xl text-sm text-gray-500 leading-relaxed">
+            Rates may vary slightly depending on subject specialization and tutor
+            availability. Families are always informed prior to scheduling.
+          </p>
         </div>
       </section>
-
-      {/* FUTURE PAGINATION / EXTRA SECTIONS (HIDDEN FOR NOW) */}
-      <section id="future-pagination" className="hidden"></section>
-
     </main>
   );
 }
