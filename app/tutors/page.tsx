@@ -158,7 +158,7 @@ export default function TutorsPage() {
           </p>
 
           <h2 className="mt-3 text-3xl sm:text-4xl font-semibold">
-            Pricing
+            Our Tutoring Services &amp; Pricing
           </h2>
 
           <div
@@ -167,8 +167,7 @@ export default function TutorsPage() {
           />
 
           <p className="mt-5 max-w-2xl text-lg text-gray-700 leading-relaxed">
-            Clear, transparent tutoring rates based on academic level and
-            specialization. All sessions are one-on-one and scheduled flexibly.
+            Clear, transparent tutoring rates based on academic level and specialization.
           </p>
 
           {/* Pricing Cards */}
@@ -189,11 +188,11 @@ export default function TutorsPage() {
               />
 
               <p className="mt-4 text-gray-700">
-                Coursework support based on subject difficulty and grade level.
+                Ideal for elementary, middle school, and standard high school subjects.
               </p>
 
               <div className="mt-6 text-3xl font-semibold">
-                $50–60
+                Starting at $55
                 <span className="text-lg font-medium text-gray-600"> / hr</span>
               </div>
             </div>
@@ -214,11 +213,11 @@ export default function TutorsPage() {
               />
 
               <p className="mt-4 text-gray-700">
-                AP/IB, advanced high school, and college-level coursework.
+                For advanced high school, AP/IB, and college-level coursework, including exam preparation.
               </p>
 
               <div className="mt-6 text-3xl font-semibold">
-                $70–80
+                Starting at $75
                 <span className="text-lg font-medium text-gray-600"> / hr</span>
               </div>
             </div>
@@ -239,11 +238,12 @@ export default function TutorsPage() {
               />
 
               <p className="mt-4 text-gray-700">
-                Essay workshops, application strategy, and long-term guidance.
+                Comprehensive support for essays, application strategy, and personalized guidance
+                through the admissions process.
               </p>
 
               <div className="mt-6 text-3xl font-semibold">
-                $80+
+                Starting at $85
                 <span className="text-lg font-medium text-gray-600"> / hr</span>
               </div>
             </div>
