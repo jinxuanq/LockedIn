@@ -6,6 +6,15 @@ export default function TutorsPage() {
   // Temporary static tutor data (replace with DB/API later)
   const tutors = [
     {
+      name: "Adrianna",
+      pronouns: "she/her",
+      school: "Cornell 29’",
+      subjects: "Public Policy, Economics",
+      bio: `Hi, I’m Adrianna! I’m a first-year at Cornell University studying public policy and economics. 
+      I am also an avid skier and sailor. I look forward to working together!`,
+      image: "/images/adrianna.jpeg",
+    },
+    {
       name: "Aimee",
       pronouns: "she/her",
       school: "Princeton 29’",
@@ -26,6 +35,16 @@ export default function TutorsPage() {
       image: "/images/akhil.jpeg",
     },
     {
+      name: "Aran",
+      pronouns: "he/him",
+      school: "Brown 29’",
+      subjects: "Politics Philosophy Economics, Music",
+      bio: `Hi! My name is Aran, and I’m a first-year at Brown University. I enjoy singing and playing piano, 
+      and I’m exploring a combination of academic and musical coursework at Brown. 
+      I look forward to working with and getting to know you through this program!`,
+      image: "/images/aran.jpeg",
+    },
+    {
       name: "Carnegie",
       pronouns: "he/him",
       school: "Cornell 28’",
@@ -38,17 +57,27 @@ export default function TutorsPage() {
       name: "Franklin",
       pronouns: "he/him",
       school: "Brown 29’",
-      subjects: "Applied Mathematics-Computer Science",
+      subjects: "Applied Mathematics, Computer Science",
       bio: `Hey, I’m Franklin!  love playing piano (classical!), reading, and cooking. 
       At Brown, I’m an event supervisor for Science Olympiad (I also competed during high school!), 
       I’m part of Full Stack, and I’m working on a startup side project.`,
       image: "/images/franklin.jpeg",
     },
     {
+      name: "Freja",
+      pronouns: "she/her",
+      school: "Brown 29’",
+      subjects: "Undecided",
+      bio: `Hi, I’m Freja! I love reading, playing clarinet, and all sorts of outdoor activities such as camping and hiking! 
+      Academically, I am exploring a broad range of interests. Looking forward to working together and finding what 
+      learning style works best for you!`,
+      image: "/images/freja.jpeg",
+    },
+    {
       name: "Jaimin",
       pronouns: "she/her",
       school: "Columbia 29’",
-      subjects: "English or Cognitive Science",
+      subjects: "English, Cognitive Science",
       bio: `Hi! I’m Jaimin! I love any kind of crafting hobbies, such as crocheting and origami-making, 
       and I also have experience working at a summer camp with elementary students and babysitting my pre-schooler cousin. 
       I’m excited to work with you!`,
@@ -68,11 +97,20 @@ export default function TutorsPage() {
       name: "Ryan",
       pronouns: "he/him",
       school: "Brown 29’",
-      subjects: "Design Engineering & Business Economics",
+      subjects: "Design Engineering, Business Economics",
       bio: `Hey, I’m Ryan! I love sports, particularly tennis, skiing, swimming, and running. 
       I’m also the co-founder and CPO of Bloom, where we’re creating tech-driven solutions for plant care. 
       Always excited to build, learn, and collaborate!`,
       image: "/images/ryan.jpeg",
+    },
+    {
+      name: "Shinyi",
+      pronouns: "she/her",
+      school: "UChicago 28’",
+      subjects: "Computer Science, Economics",
+      bio: `Hi, I’m Shinyi! I’m a sophomore at UChicago studying CS and Econ. At school, I’m part of the Language 
+      Processing Lab. In my free time, I like crocheting, cooking, and watching soccer.`,
+      image: "/images/shinyi.jpeg",
     },
     {
       name: "Stephanie",
@@ -88,7 +126,7 @@ export default function TutorsPage() {
       name: "Yufeng",
       pronouns: "he/him",
       school: "UMich 26’",
-      subjects: "Computer Science & Data Analytics",
+      subjects: "Computer Science, Data Analytics",
       bio: `I am YuFeng, senior at University of Michigan! I am the president of the school's Chinese Language Table 
       because I enjoy exchanging cultures with people from different backgrounds!`,
       image: "/images/yufeng.jpeg",
