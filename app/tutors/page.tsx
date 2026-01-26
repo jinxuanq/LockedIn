@@ -1,7 +1,142 @@
+"use client";
+
 import TutorCard from "@/components/TutorCard";
+import { useEffect, useRef, useState } from "react";
+
+/**
+ * Reveal: subtle fade-up on scroll (guaranteed visible)
+ */
+function Reveal({
+  children,
+  className = "",
+  delayMs = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delayMs?: number;
+}) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [ready, setReady] = useState(false);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    setReady(true);
+
+    if (prefersReduced) {
+      setShow(true);
+      return;
+    }
+
+    const reveal = () => {
+      requestAnimationFrame(() => {
+        window.setTimeout(() => setShow(true), delayMs);
+      });
+    };
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          reveal();
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -12% 0px" }
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [delayMs]);
+
+  return (
+    <div
+      ref={ref}
+      className={[
+        className,
+        "motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:transition-none",
+        ready
+          ? show
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-5"
+          : "opacity-0 translate-y-5",
+        "transition-all duration-500 ease-out will-change-transform",
+      ].join(" ")}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * UnderlineLink: micro-delight underline grows in from left on hover/focus
+ */
+function UnderlineLink({
+  href,
+  children,
+  className = "",
+  underlineColor,
+  ...props
+}: React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+  underlineColor: string;
+}) {
+  return (
+    <a
+      href={href}
+      {...props}
+      className={[
+        "relative inline-flex items-center font-semibold",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+        "after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-full after:bg-[var(--u)]",
+        "after:origin-left after:scale-x-0 after:transition-transform after:duration-300 after:ease-out",
+        "hover:after:scale-x-100 focus-visible:after:scale-x-100",
+        className,
+      ].join(" ")}
+      style={
+        {
+          ...(props.style || {}),
+          // @ts-ignore
+          ["--u" as any]: underlineColor,
+        } as React.CSSProperties
+      }
+    >
+      {children}
+    </a>
+  );
+}
 
 export default function TutorsPage() {
   const ACCENT = "#8B1E3F"; // muted Penn-style crimson
+
+  // Readability tuned for parents (without bloating typography)
+  const bodyText = "text-[17px] sm:text-[18px] text-gray-700 leading-relaxed";
+  const smallLabel = "text-xs font-semibold tracking-wide uppercase text-gray-500";
+
+  // Pricing card styles (THIS fixes your crash: cardBase is now defined)
+  const cardBase = "relative rounded-xl border border-gray-200 bg-white";
+  const cardMotion =
+    "transition-all duration-300 ease-out " +
+    "hover:shadow-xl hover:-translate-y-1 hover:scale-[1.04] " +
+    "motion-reduce:transform-none motion-reduce:transition-none";
+  const cardWarmTint = "hover:bg-[rgba(139,30,63,0.02)]";
+  const cardAccentRail =
+    "before:absolute before:left-0 before:top-0 before:h-full before:w-[3px] before:rounded-l-xl " +
+    "before:bg-[rgba(139,30,63,0.0)] hover:before:bg-[rgba(139,30,63,0.35)] " +
+    "before:transition-colors before:duration-300";
+
+  // Tutor card wrapper motion:
+  // TutorCard already has border/shadow + reveal panel.
+  // We only add a *container lift/scale* so nothing conflicts visually.
+  const tutorWrapper =
+    "transition-all duration-300 ease-out " +
+    "hover:-translate-y-1 hover:scale-[1.03] hover:drop-shadow-[0_20px_50px_rgba(0,0,0,0.12)] " +
+    "motion-reduce:transform-none motion-reduce:transition-none";
 
   // Temporary static tutor data (replace with DB/API later)
   const tutors = [
@@ -134,164 +269,174 @@ export default function TutorsPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-white text-[#001F3F]">
+    <main className="min-h-screen bg-white text-[#001F3F] [font-size:18px] leading-[1.7]">
       {/* ===================== */}
       {/* TUTORS SECTION */}
       {/* ===================== */}
 
-      <header className="pt-16 pb-10">
+      {/* Anchored header block */}
+      <header className="pt-14 pb-10">
         <div className="max-w-6xl mx-auto px-6">
-          <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
-            Directory
-          </p>
+          <Reveal>
+            <div className="rounded-2xl border border-gray-200 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.08)]">
+              <div className="px-6 sm:px-10 py-9">
+                <p className={smallLabel}>Directory</p>
 
-          <h1 className="mt-3 text-4xl sm:text-5xl font-semibold">
-            Our Tutors
-          </h1>
+                <h1 className="mt-3 text-4xl sm:text-5xl font-semibold">
+                  Our Tutors
+                </h1>
 
-          <div
-            className="mt-5 h-px w-20"
-            style={{ backgroundColor: ACCENT, opacity: 0.35 }}
-          />
+                <div
+                  className="mt-5 h-px w-20"
+                  style={{ backgroundColor: ACCENT, opacity: 0.35 }}
+                />
 
-          <p className="mt-5 max-w-2xl text-lg text-gray-700 leading-relaxed">
-            Meet our current student tutors. Each tutor is selected for academic
-            strength, clarity, and a student-centered approach.
-          </p>
+                <p className={"mt-5 max-w-2xl " + bodyText}>
+                  Meet our current student tutors. Each tutor is selected for academic strength,
+                  clarity, and a student-centered approach.
+                </p>
+
+                <div className="mt-5">
+                  <UnderlineLink
+                    href="#pricing"
+                    underlineColor={ACCENT}
+                    className="text-[17px] sm:text-[18px] text-[#001F3F] rounded-md focus-visible:ring-[#8B1E3F]/25"
+                  >
+                    View tutoring services &amp; pricing →
+                  </UnderlineLink>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </header>
-
-      {/* SEARCH / FILTER — intentionally disabled for now */}
-      {/*
-      <section className="pb-10">
-        <div className="max-w-6xl mx-auto px-6">
-          ...
-        </div>
-      </section>
-      */}
 
       {/* Tutor Grid */}
       <section className="pb-24">
         <div className="max-w-6xl mx-auto px-6">
+          <Reveal>
+            <div className="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+              <div>
+                <p className={smallLabel}>Selection</p>
+                <p className={"mt-1 " + bodyText}>
+                  Browse by fit — we’ll still match you based on goals and availability.
+                </p>
+              </div>
+              <div className="text-sm text-gray-600">
+                <span className="font-semibold text-[#001F3F]">{tutors.length}</span>{" "}
+                tutors listed
+                <span className="mx-2 text-gray-300">|</span>
+                <span className="inline-block">
+                  Ready to start?{" "}
+                  <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLScBTd-fMie2BziRNCEUAjYahEt3zwujy0maNvyJ4XsheYSUbQ/viewform?usp=header"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold hover:underline"
+                    style={{ color: ACCENT }}
+                  >
+                    Request a match →
+                  </a>
+                </span>
+              </div>
+            </div>
+          </Reveal>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {tutors.map((tutor) => (
-              <TutorCard
-                key={`${tutor.name}-${tutor.school}`}
-                tutor={tutor}
-              />
+            {tutors.map((tutor, idx) => (
+              <Reveal key={`${tutor.name}-${tutor.school}`} delayMs={(idx % 9) * 60}>
+                {/* Wrapper adds the “homepage-style” lift/scale without fighting TutorCard’s own styling */}
+                <div className={tutorWrapper}>
+                  <TutorCard tutor={tutor} />
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* ===================== */}
-      {/* PRICING SECTION (APPENDED) */}
+      {/* PRICING SECTION */}
       {/* ===================== */}
 
-      <section className="border-t border-gray-200 pt-20 pb-32 bg-gray-50">
+      <section id="pricing" className="border-t border-gray-200 pt-20 pb-32 bg-gray-50">
         <div className="max-w-6xl mx-auto px-6">
-          {/* Pricing Header */}
-          <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
-            Program Information
-          </p>
+          <Reveal>
+            <p className={smallLabel}>Program Information</p>
 
-          <h2 className="mt-3 text-3xl sm:text-4xl font-semibold">
-            Our Tutoring Services &amp; Pricing
-          </h2>
+            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold">
+              Our Tutoring Services &amp; Pricing
+            </h2>
 
-          <div
-            className="mt-5 h-px w-20"
-            style={{ backgroundColor: ACCENT, opacity: 0.35 }}
-          />
+            <div
+              className="mt-5 h-px w-20"
+              style={{ backgroundColor: ACCENT, opacity: 0.35 }}
+            />
 
-          <p className="mt-5 max-w-2xl text-lg text-gray-700 leading-relaxed">
-            Clear, transparent tutoring rates based on academic level and specialization.
-          </p>
+            <p className={"mt-5 max-w-2xl " + bodyText}>
+              Clear, transparent tutoring rates based on academic level and specialization.
+            </p>
+          </Reveal>
 
-          {/* Pricing Cards */}
           <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 max-w-5xl">
-            {/* Card 1 */}
-            <div className="rounded-xl border border-gray-200 bg-white p-8">
-              <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
-                Tutoring
-              </p>
+            {[
+              {
+                label: "Tutoring",
+                title: "Standard Tutoring",
+                desc: "Ideal for elementary, middle school, and standard high school subjects.",
+                price: "Starting at $55",
+              },
+              {
+                label: "Advanced",
+                title: "Advanced Tutoring",
+                desc: "For advanced high school, AP/IB, and college-level coursework, including exam preparation.",
+                price: "Starting at $75",
+              },
+              {
+                label: "Mentorship",
+                title: "College Admissions Mentorship",
+                desc: "Comprehensive support for essays, application strategy, and personalized guidance through the admissions process.",
+                price: "Starting at $85",
+              },
+            ].map((c, idx) => (
+              <Reveal key={c.title} delayMs={idx * 90}>
+                <div
+                  className={[
+                    cardBase,
+                    cardMotion,
+                    cardWarmTint,
+                    cardAccentRail,
+                    "p-8",
+                  ].join(" ")}
+                >
+                  <p className={smallLabel}>{c.label}</p>
 
-              <h3 className="mt-2 text-xl font-semibold">
-                Standard Tutoring
-              </h3>
+                  <h3 className="mt-2 text-xl sm:text-2xl font-semibold">
+                    {c.title}
+                  </h3>
 
-              <div
-                className="mt-4 h-px w-16"
-                style={{ backgroundColor: ACCENT, opacity: 0.35 }}
-              />
+                  <div
+                    className="mt-4 h-px w-16"
+                    style={{ backgroundColor: ACCENT, opacity: 0.35 }}
+                  />
 
-              <p className="mt-4 text-gray-700">
-                Ideal for elementary, middle school, and standard high school subjects.
-              </p>
+                  <p className={"mt-4 " + bodyText}>{c.desc}</p>
 
-              <div className="mt-6 text-3xl font-semibold">
-                Starting at $55
-                <span className="text-lg font-medium text-gray-600"> / hr</span>
-              </div>
-            </div>
-
-            {/* Card 2 */}
-            <div className="rounded-xl border border-gray-200 bg-white p-8">
-              <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
-                Advanced
-              </p>
-
-              <h3 className="mt-2 text-xl font-semibold">
-                Advanced Tutoring
-              </h3>
-
-              <div
-                className="mt-4 h-px w-16"
-                style={{ backgroundColor: ACCENT, opacity: 0.35 }}
-              />
-
-              <p className="mt-4 text-gray-700">
-                For advanced high school, AP/IB, and college-level coursework, including exam preparation.
-              </p>
-
-              <div className="mt-6 text-3xl font-semibold">
-                Starting at $75
-                <span className="text-lg font-medium text-gray-600"> / hr</span>
-              </div>
-            </div>
-
-            {/* Card 3 */}
-            <div className="rounded-xl border border-gray-200 bg-white p-8">
-              <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
-                Mentorship
-              </p>
-
-              <h3 className="mt-2 text-xl font-semibold">
-                College Admissions Mentorship
-              </h3>
-
-              <div
-                className="mt-4 h-px w-16"
-                style={{ backgroundColor: ACCENT, opacity: 0.35 }}
-              />
-
-              <p className="mt-4 text-gray-700">
-                Comprehensive support for essays, application strategy, and personalized guidance
-                through the admissions process.
-              </p>
-
-              <div className="mt-6 text-3xl font-semibold">
-                Starting at $85
-                <span className="text-lg font-medium text-gray-600"> / hr</span>
-              </div>
-            </div>
+                  <div className="mt-6 text-3xl font-semibold">
+                    {c.price}
+                    <span className="text-lg font-medium text-gray-600"> / hr</span>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
           </div>
 
-          {/* Footnote */}
-          <p className="mt-12 max-w-2xl text-sm text-gray-500 leading-relaxed">
-            Rates may vary slightly depending on subject specialization and tutor
-            availability. Families are always informed prior to scheduling.
-          </p>
+          <Reveal delayMs={120}>
+            <p className="mt-12 max-w-2xl text-[15px] sm:text-[16px] text-gray-500 leading-relaxed">
+              Rates may vary slightly depending on subject specialization and tutor availability.
+              Families are always informed prior to scheduling.
+            </p>
+          </Reveal>
         </div>
       </section>
     </main>
