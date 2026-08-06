@@ -18,7 +18,6 @@ function Reveal({
   delayMs?: number;
 }) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [ready, setReady] = useState(false);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -30,11 +29,8 @@ function Reveal({
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // First: ensure we render at least once in the hidden state.
-    setReady(true);
-
     if (prefersReduced) {
-      setShow(true);
+      requestAnimationFrame(() => setShow(true));
       return;
     }
 
@@ -64,11 +60,7 @@ function Reveal({
       className={[
         className,
         "motion-reduce:opacity-100 motion-reduce:translate-y-0 motion-reduce:transition-none",
-        ready
-          ? show
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-5"
-          : "opacity-0 translate-y-5",
+        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5",
         "transition-all duration-500 ease-out will-change-transform",
       ].join(" ")}
     >
@@ -102,13 +94,10 @@ function UnderlineLink({
         "hover:after:scale-x-100 focus-visible:after:scale-x-100",
         className,
       ].join(" ")}
-      style={
-        {
-          ...(props.style || {}),
-          // @ts-ignore
-          ["--u" as any]: underlineColor,
-        } as React.CSSProperties
-      }
+      style={{
+        ...(props.style || {}),
+        "--u": underlineColor,
+      } as React.CSSProperties & { "--u": string }}
     >
       {children}
     </a>
@@ -118,8 +107,6 @@ function UnderlineLink({
 export default function HomePage() {
   // Muted Penn-like accent (use sparingly)
   const ACCENT = "#8B1E3F"; // muted crimson
-  const NAVY = "#001F3F";
-
   const bodyText = "text-[17px] sm:text-[18px] text-gray-700 leading-relaxed";
   const smallLabel = "text-xs font-semibold tracking-wide uppercase text-gray-500";
 
@@ -169,9 +156,7 @@ export default function HomePage() {
               {/* CTAs */}
               <div className="mt-7 flex flex-wrap gap-4">
                 <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLScBTd-fMie2BziRNCEUAjYahEt3zwujy0maNvyJ4XsheYSUbQ/viewform?usp=header"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="/intake"
                   className={[
                     "inline-flex items-center justify-center rounded-md border px-5 py-3",
                     "text-base font-semibold text-white",
@@ -489,9 +474,7 @@ export default function HomePage() {
                     </p>
 
                     <UnderlineLink
-                      href="https://docs.google.com/forms/d/e/1FAIpQLScBTd-fMie2BziRNCEUAjYahEt3zwujy0maNvyJ4XsheYSUbQ/viewform?usp=header"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/intake"
                       underlineColor={ACCENT}
                       className="mt-3 text-[17px] sm:text-[18px] text-[#8B1E3F] rounded-md focus-visible:ring-[#8B1E3F]/40"
                     >

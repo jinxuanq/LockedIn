@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function Navbar() {
   const ACCENT = "#8B1E3F"; // muted Penn-style crimson
+  const { user, loading, logout } = useAuth();
 
   return (
     <nav className="w-full bg-[#001F3F] border-b border-white/10">
@@ -16,7 +20,7 @@ export default function Navbar() {
           </Link>
 
           {/* Right-side nav */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             <Link
               href="/tutors"
               className="text-base font-semibold tracking-wide text-white/80 hover:text-white transition"
@@ -24,18 +28,33 @@ export default function Navbar() {
               Tutors
             </Link>
 
-            {/* structural divider */}
-            <span className="h-6 w-px bg-white/15" aria-hidden="true" />
-
-            <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLScBTd-fMie2BziRNCEUAjYahEt3zwujy0maNvyJ4XsheYSUbQ/viewform?usp=header"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold text-white transition"
-              style={{ backgroundColor: ACCENT }}
-            >
-              Get Matched
-            </a>
+            {!loading && user ? (
+              <>
+                <Link href="/dashboard" className="text-sm font-semibold text-white/80 hover:text-white">
+                  Workspace
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => void logout()}
+                  className="hidden text-sm font-semibold text-white/70 hover:text-white sm:inline"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" className="hidden text-sm font-semibold text-white/80 hover:text-white sm:inline">
+                  Sign in
+                </Link>
+                <Link
+                  href="/intake"
+                  className="inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold text-white transition"
+                  style={{ backgroundColor: ACCENT }}
+                >
+                  Get Matched
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

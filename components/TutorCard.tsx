@@ -1,115 +1,31 @@
 import Image from "next/image";
+import Link from "next/link";
+import type { TutorSummary } from "@/lib/types";
 
-interface Tutor {
-  name: string;
-  pronouns: string;
-  school: string;
-  subjects: string;
-  bio: string;
-  image: string;
-}
-
-export default function TutorCard({ tutor }: { tutor: Tutor }) {
-  const ACCENT = "#8B1E3F"; // muted Penn-style crimson
-
-  // subjects string -> chips (supports comma-separated or bullet-like input)
-  const subjectChips = tutor.subjects
-    .split(/,|•|\|/g)
-    .map((s) => s.trim())
-    .filter(Boolean);
-
+export default function TutorCard({ tutor }: { tutor: TutorSummary }) {
   return (
-    <article
-      className="
-        group relative overflow-hidden rounded-xl bg-white
-        border border-gray-200
-        shadow-sm hover:shadow-md transition
-        focus-within:shadow-md
-      "
-      tabIndex={0}
-      aria-label={`Tutor card for ${tutor.name}`}
-    >
-      {/* Image */}
-      <div className="relative h-56 w-full">
-        <Image
-          src={tutor.image}
-          alt={tutor.name}
-          fill
-          className="object-cover"
-        />
-        {/* subtle navy tint for consistency (very light) */}
-        <div className="absolute inset-0 bg-[#001F3F]/10" />
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+      <div className="relative h-56 w-full overflow-hidden bg-gray-100">
+        <Image src={tutor.image} alt={tutor.name} fill className="object-cover transition duration-500 group-hover:scale-[1.03]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#001F3F]/25 to-transparent" />
       </div>
-
-      {/* Summary content */}
-      <div className="p-6">
-        {/* Eyebrow label */}
-        <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
-          Tutor
-        </p>
-
-        <div className="mt-2">
-          <h2 className="text-lg sm:text-xl font-semibold text-[#001F3F] leading-snug">
-            {tutor.name}
-            <span className="ml-2 text-sm font-normal text-gray-500">
-              ({tutor.pronouns})
-            </span>
-          </h2>
-
-          <p className="mt-1 text-sm text-gray-600">{tutor.school}</p>
-
-          {/* Accent rule */}
-          <div
-            className="mt-4 h-px w-16"
-            style={{ backgroundColor: ACCENT, opacity: 0.35 }}
-            aria-hidden="true"
-          />
-
-          {/* Subjects as chips */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {subjectChips.slice(0, 6).map((s) => (
-              <span
-                key={s}
-                className="rounded-full border border-gray-200 px-3 py-1 text-xs font-semibold text-[#001F3F]"
-                style={{ backgroundColor: "rgba(139,30,63,0.04)" }}
-              >
-                {s}
-              </span>
-            ))}
+      <div className="flex flex-1 flex-col p-6">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#8B1E3F]">Approved tutor</p>
+        <div className="mt-2 flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-semibold text-[#001F3F]">{tutor.name} <span className="text-sm font-normal text-gray-500">({tutor.pronouns})</span></h2>
+            <p className="mt-1 text-sm text-gray-600">{tutor.school}</p>
           </div>
+          <span className="whitespace-nowrap text-sm font-semibold text-[#001F3F]">${tutor.hourlyRate}/hr</span>
         </div>
-      </div>
-
-      {/* Reveal panel: slides up on hover/focus (no dark overlay) */}
-      <div
-        className="
-          absolute inset-x-0 bottom-0
-          translate-y-full
-          group-hover:translate-y-0 group-focus-within:translate-y-0
-          transition-transform duration-300
-          bg-white
-          border-t border-gray-200
-          p-6
-        "
-      >
-        <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold tracking-wide uppercase text-gray-500">
-            About
-          </p>
-          <span
-            className="h-2 w-2 rounded-full"
-            style={{ backgroundColor: ACCENT }}
-            aria-hidden="true"
-          />
+        <p className="mt-4 text-sm font-semibold text-[#001F3F]">{tutor.headline}</p>
+        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-600">{tutor.bio}</p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          {tutor.subjects.map((subject) => (
+            <span key={subject.id} className="rounded-full border border-[#8B1E3F]/15 bg-[#8B1E3F]/5 px-3 py-1 text-xs font-semibold text-[#001F3F]">{subject.name}</span>
+          ))}
         </div>
-
-        <p className="mt-3 text-sm text-gray-700 leading-relaxed">
-          {tutor.bio}
-        </p>
-
-        <p className="mt-4 text-xs text-gray-500">
-          Tip: Hover or focus to read more.
-        </p>
+        <Link href={`/tutors/${tutor.id}`} className="mt-6 inline-flex items-center font-semibold text-[#8B1E3F]">View profile & availability →</Link>
       </div>
     </article>
   );
