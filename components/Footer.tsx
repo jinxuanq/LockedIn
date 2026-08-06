@@ -7,7 +7,7 @@ export default function Footer() {
 
         {/* Company Name */}
         <div className="text-xl font-semibold text-white/80">
-          We Got You
+          LockedIn Tutoring
         </div>
 
         {/* Contact */}
@@ -21,8 +21,8 @@ export default function Footer() {
 
         {/* Privacy policy */}
         <div className="mt-6">
-          <Link href="/privacy-policy" className="hover:text-white transition">
-            Privacy Policy
+          <Link href="/how-it-works" className="hover:text-white transition">
+            How it works
           </Link>
         </div>
 
